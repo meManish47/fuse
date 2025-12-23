@@ -1,12 +1,6 @@
 import { Link } from "react-router-dom";
 import { useAuth } from "../AuthContext";
-import { FaUser } from "react-icons/fa";
-import { useState } from "react";
 
-const menuList = [
-  { name: "About", link: "/about" },
-  { name: "Login", link: "/login" },
-];
 export default function Header() {
   const { user, logout } = useAuth();
   const isLoggedIn = !!user;
@@ -53,7 +47,7 @@ export default function Header() {
               <li className="pointer-events-none text-gray-500">
                 <p>{user?.name}</p>
               </li>
-              <li className="hover:bg-[#C5D8D4] hover:border-1 border-[#333333]">
+              <li className="hover:bg-[#C5D8D4] hover:border border-[#333333]">
                 <button onClick={logout}>Logout</button>
               </li>
             </ul>
