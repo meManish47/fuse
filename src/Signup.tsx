@@ -7,9 +7,37 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   function handleSubmit() {
-    console.log(email, name, password);
-    
+  if (!email || !name || !password) return;
+
+  const user = {
+    id: Date.now(),
+    name,
+    email,
+    password, 
+  };
+
+  const existingUsers = JSON.parse(
+    localStorage.getItem("users") || "[]"
+  );
+
+  const userExists = existingUsers.some(
+    (u: any) => u.email === email
+  );
+
+  if (userExists) {
+    alert("User already exists");
+    return;
   }
+
+  const updatedUsers = [...existingUsers, user];
+  localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+  setName("");
+  setEmail("");
+  setPassword("");
+  alert("Account created successfully");
+}
+
   return (
     <div className="h-screen overflow-hidden">
       <Header />
