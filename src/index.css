@@ -1,0 +1,11 @@
+@import url('https://fonts.googleapis.com/css2?family=Aladin&family=Bitcount+Grid+Double:wght@100..900&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Meddon&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import "tailwindcss";
+@plugin "daisyui";
+@theme {
+  --font-aladin:'Aladin', 'system-ui';
+  --font-meddon: 'Meddon', 'system-ui';
+  --font-bitcount:'Bitcount Grid Double', 'system-ui';
+  --font-roboto: 'Roboto', 'system-ui';
+  --font-dmsans: 'DM Sans', 'system-ui';
+}
+ 
