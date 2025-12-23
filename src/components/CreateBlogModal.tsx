@@ -1,21 +1,29 @@
 import { useRef, useState } from "react";
 import { useBlogs } from "../BlogContext";
+import { useAuth } from "../AuthContext";
 
 export default function CreateBlogModal() {
   const modalRef = useRef<HTMLDialogElement | null>(null);
-  const { addBlog ,blogs} = useBlogs();
-
+  const { addBlog, blogs } = useBlogs();
+  const { user } = useAuth();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [imageUrl, setImageUrl] = useState("");
 
-  const openModal = () => modalRef.current?.showModal();
+  const openModal = () => {
+    if (!user) {
+      alert("Please Login First!!");
+      return;
+    }
+    modalRef.current?.showModal();
+  };
   const closeModal = () => modalRef.current?.close();
   const len = blogs.length;
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
+    if(!user) return;
     addBlog({
+      user,
       id: len,
       title,
       content,
@@ -33,10 +41,10 @@ export default function CreateBlogModal() {
     <>
       <button
         onClick={openModal}
-        className="group relative inline-block text-sm font-medium text-[#333333] cursor-pointer"
+        className="group relative inline-block text-sm font-medium text-[#333333] cursor-pointer mt-2"
       >
         <span className="absolute inset-0 bg-[#333333] transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
-        <span className="relative block border border-[#333333] bg-[#F5F7FB] px-8 py-3">
+        <span className="relative block border border-[#333333] bg-[#F5F7FB] px-4 w-max sm:px-8 py-2  sm:py-3">
           Create +
         </span>
       </button>

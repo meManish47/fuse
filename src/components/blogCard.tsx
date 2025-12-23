@@ -1,12 +1,14 @@
 import { Link } from "react-router-dom";
+import type { Blog } from "../BlogContext";
 
-export const BlogCard = ({
-  blog,
-}: {
-  blog: { title: string; content: string; imageUrl: string; now: number ,id:number};
-}) => {
+export const BlogCard = ({ blog }: { blog: Blog }) => {
+  const user = blog.user;
+
   return (
-    <Link className="relative overflow-hidden rounded-lg shadow-sm transition hover:shadow-lg w-80  bg-gray-200 cursor-pointer" to={`/blog/${blog.id}`}>
+    <Link
+      className="relative overflow-hidden rounded-lg shadow-sm transition hover:shadow-lg w-full sm:w-72 bg-gray-200 cursor-pointer"
+      to={`/blog/${blog.id}`}
+    >
       <img
         alt=""
         src={
@@ -16,15 +18,26 @@ export const BlogCard = ({
         className="absolute inset-0 h-full w-full object-cover hover:scale-102 transition duration-300"
       />
 
-      <div className="relative bg-linear-to-t pointer-events-none from-gray-900/50 to-gray-900/25 pt-32 sm:pt-48 lg:pt-64">
+      <div className="relative bg-linear-to-t pointer-events-none from-gray-900/60 to-gray-900/20 pt-32 sm:pt-48 lg:pt-64">
         <div className="p-4 sm:p-6">
-          <time dateTime="2022-10-10" className="block text-xs text-white/90">
+          <time className="block text-xs text-white/80 mb-2">
             {new Date(blog.now).toLocaleDateString()}
           </time>
 
-          <a href="#">
-            <h3 className="mt-0.5 text-lg text-white">{blog.title}</h3>
-          </a>
+          <div className="flex items-baseline justify-between gap-2">
+            <h3 className="text-lg text-white leading-snug truncate">
+              {blog.title}
+            </h3>
+
+            <span className="flex items-center gap-2 text-xs text-white/90 shrink-0">
+              <span className="h-6 w-6 rounded-full bg-[#333333] flex items-center justify-center text-[10px] font-medium">
+                {user.name.charAt(0).toUpperCase()}
+              </span>
+              <span className="max-w-[90px] truncate">
+                {user.name}
+              </span>
+            </span>
+          </div>
 
           <p className="mt-2 line-clamp-3 text-sm/relaxed text-white/95">
             {blog.content}

@@ -1,4 +1,5 @@
 import { createContext, useContext, useEffect, useState } from "react";
+import type { User } from "./AuthContext";
 
 export type Blog = {
   id: number;
@@ -6,6 +7,7 @@ export type Blog = {
   content: string;
   imageUrl: string;
   now: number;
+  user:User
 };
 
 type BlogContextType = {

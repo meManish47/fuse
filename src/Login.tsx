@@ -27,7 +27,7 @@ export default function Login() {
     <div className="h-screen overflow-hidden">
       <Header />
 
-      <main className="min-h-screen bg-[#C5D8D4] flex items-center justify-center">
+      <main className="min-h-screen bg-[#C5D8D4] flex items-center justify-center sm:px-0 px-4">
         <div className="bg-[#F5F7FB] border-2 border-[#333333] w-105 p-10">
           <h1 className="text-3xl font-dmsans font-semibold text-[#333333] mb-6">
             Login

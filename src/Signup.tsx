@@ -7,41 +7,37 @@ export default function Signup() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   function handleSubmit() {
-  if (!email || !name || !password) return;
+    if (!email || !name || !password) return;
 
-  const user = {
-    id: Date.now(),
-    name,
-    email,
-    password, 
-  };
+    const user = {
+      id: Date.now(),
+      name,
+      email,
+      password,
+    };
 
-  const existingUsers = JSON.parse(
-    localStorage.getItem("users") || "[]"
-  );
+    const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
 
-  const userExists = existingUsers.some(
-    (u: any) => u.email === email
-  );
+    const userExists = existingUsers.some((u: any) => u.email === email);
 
-  if (userExists) {
-    alert("User already exists");
-    return;
+    if (userExists) {
+      alert("User already exists");
+      return;
+    }
+
+    const updatedUsers = [...existingUsers, user];
+    localStorage.setItem("users", JSON.stringify(updatedUsers));
+
+    setName("");
+    setEmail("");
+    setPassword("");
+    alert("Account created successfully");
   }
-
-  const updatedUsers = [...existingUsers, user];
-  localStorage.setItem("users", JSON.stringify(updatedUsers));
-
-  setName("");
-  setEmail("");
-  setPassword("");
-  alert("Account created successfully");
-}
 
   return (
     <div className="h-screen overflow-hidden">
       <Header />
-      <main className="min-h-screen bg-[#C5D8D4] flex items-center justify-center">
+      <main className="min-h-screen bg-[#C5D8D4] flex items-center justify-center sm:px-0 px-4">
         <div className="bg-[#F5F7FB] border-2 border-[#333333] w-105 p-10">
           <h1 className="text-3xl font-dmsans font-semibold text-[#333333] mb-6">
             Sign Up

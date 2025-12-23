@@ -6,14 +6,14 @@ export default function Header() {
   const isLoggedIn = !!user;
 
   return (
-    <div className="px-32 h-16  bg-[#F5F7FB]  flex justify-between items-center">
+    <div className="px-2 sm:px-32 h-16  bg-[#F5F7FB]  flex justify-between items-center">
       <Link
         className="font-meddon  font-extrabold text-4xl tracking-widest text-[#333333] cursor-pointer"
         to="/"
       >
         fuse
       </Link>
-      <div className="flex gap-8 ">
+      <div className="flex  sm:gap-8 ">
         <Link
           to={"/about"}
           className="text-[#4F4F4F] font-roboto text-sm tracking-wider cursor-pointer font-semibold h-16 hover:text-[#00a984] flex items-center px-2"
