@@ -1,9 +1,10 @@
 import { Link } from "react-router-dom";
 import type { Blog } from "../BlogContext";
+import { DeleteBlogButton } from "./DeleteBlogButton";
+import { UpdateBlogButton } from "./UpdateBlogButton";
 
 export const BlogCard = ({ blog }: { blog: Blog }) => {
   const user = blog.user;
-
   return (
     <Link
       className="relative overflow-hidden rounded-lg shadow-sm transition hover:shadow-lg w-full sm:w-72 bg-gray-200 cursor-pointer"
@@ -17,7 +18,10 @@ export const BlogCard = ({ blog }: { blog: Blog }) => {
         }
         className="absolute inset-0 h-full w-full object-cover hover:scale-102 transition duration-300"
       />
-
+      <div className="absolute top-2 right-2 z-10 flex gap-2">
+        <UpdateBlogButton blog={blog} />
+        <DeleteBlogButton blog={blog} />
+      </div>
       <div className="relative bg-linear-to-t pointer-events-none from-gray-900/60 to-gray-900/20 pt-32 sm:pt-48 lg:pt-64">
         <div className="p-4 sm:p-6">
           <time className="block text-xs text-white/80 mb-2">
@@ -33,9 +37,7 @@ export const BlogCard = ({ blog }: { blog: Blog }) => {
               <span className="h-6 w-6 rounded-full bg-[#333333] flex items-center justify-center text-[10px] font-medium">
                 {user.name.charAt(0).toUpperCase()}
               </span>
-              <span className="max-w-[90px] truncate">
-                {user.name}
-              </span>
+              <span className="max-w-22.5 truncate">{user.name}</span>
             </span>
           </div>
 

@@ -2,39 +2,44 @@ import { useRef, useState } from "react";
 import { useBlogs } from "../BlogContext";
 import { useAuth } from "../AuthContext";
 import toast from "react-hot-toast";
+import type { Blog } from "../BlogContext";
+import { FiEdit3 } from "react-icons/fi";
 
-export default function CreateBlogModal() {
+type Props = {
+  blog: Blog;
+};
+
+export const UpdateBlogButton = ({ blog }: Props) => {
   const modalRef = useRef<HTMLDialogElement | null>(null);
-  const { addBlog, blogs } = useBlogs();
+  const { updateBlog } = useBlogs();
   const { user } = useAuth();
-  const [title, setTitle] = useState("");
-  const [content, setContent] = useState("");
-  const [imageUrl, setImageUrl] = useState("");
 
-  const openModal = () => {
-    if (!user) {
-      toast.error("Please login first!", { duration: 1000 });
-      return;
-    }
+  const [title, setTitle] = useState(blog.title);
+  const [content, setContent] = useState(blog.content);
+  const [imageUrl, setImageUrl] = useState(blog.imageUrl);
+
+  if (!user || user.id !== blog.user.id) return null;
+
+  const openModal = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
     modalRef.current?.showModal();
   };
+
   const closeModal = () => modalRef.current?.close();
-  const len = blogs.length;
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!user) return;
-    addBlog({
-      user,
-      id: len,
+    e.stopPropagation();
+    updateBlog({
+      ...blog,
       title,
       content,
       imageUrl,
       now: Date.now(),
     });
 
-    setTitle("");
-    setContent("");
-    setImageUrl("");
+    toast.success("Blog updated!", { duration: 1000 });
     closeModal();
   };
 
@@ -42,26 +47,22 @@ export default function CreateBlogModal() {
     <>
       <button
         onClick={openModal}
-        className="group relative inline-block text-sm font-medium text-[#333333] cursor-pointer mt-2"
+        className=" text-xs px-2 py-1 rounded hover:scale-110 transition duration-200 cursor-pointer"
       >
-        <span className="absolute inset-0 bg-[#333333] transition-transform group-hover:translate-x-0.5 group-hover:translate-y-0.5" />
-        <span className="relative block border border-[#333333] bg-[#F5F7FB] px-4 w-max sm:px-8 py-2  sm:py-3">
-          Create +
-        </span>
+        <FiEdit3 size={16} />
       </button>
 
       <dialog ref={modalRef} className="modal">
         <div className="modal-box border-2 max-w-2xl bg-[#F5F7FB] text-[#333333] rounded-none">
-          <h2 className="text-2xl font-semibold mb-6">Create New Blog</h2>
+          <h2 className="text-2xl font-semibold mb-6">Edit Blog</h2>
 
-          <form onSubmit={handleSubmit} className="space-y-5">
+          <form className="space-y-5">
             <div>
               <label className="block text-sm font-medium mb-1">Title</label>
               <input
                 required
                 value={title}
                 onChange={(e) => setTitle(e.target.value)}
-                placeholder="Enter blog title"
                 className="w-full border border-[#333333] bg-transparent px-4 py-2 focus:outline-none"
               />
             </div>
@@ -74,7 +75,6 @@ export default function CreateBlogModal() {
                 type="url"
                 value={imageUrl}
                 onChange={(e) => setImageUrl(e.target.value)}
-                placeholder="https://image-link"
                 className="w-full border border-[#333333] bg-transparent px-4 py-2 focus:outline-none"
               />
             </div>
@@ -85,7 +85,6 @@ export default function CreateBlogModal() {
                 required
                 value={content}
                 onChange={(e) => setContent(e.target.value)}
-                placeholder="Write your blog content..."
                 className="w-full h-36 border border-[#333333] bg-transparent px-4 py-2 resize-none focus:outline-none"
               />
             </div>
@@ -94,16 +93,17 @@ export default function CreateBlogModal() {
               <button
                 type="button"
                 onClick={closeModal}
-                className="border border-[#333333] px-6 py-2 hover:bg-[#333333] hover:text-white transition cursor-pointer"
+                className="border border-[#333333] px-6 py-2 hover:bg-[#333333] hover:text-white transition"
               >
                 Cancel
               </button>
 
               <button
-                type="submit"
-                className="bg-[#333333] text-white px-6 py-2 hover:opacity-90 transition cursor-pointer"
+                type="button"
+                onClick={handleSubmit}
+                className="bg-[#333333] text-white px-6 py-2 hover:opacity-90 transition"
               >
-                Publish
+                Update
               </button>
             </div>
           </form>
@@ -111,4 +111,4 @@ export default function CreateBlogModal() {
       </dialog>
     </>
   );
-}
+};

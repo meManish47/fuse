@@ -7,12 +7,14 @@ export type Blog = {
   content: string;
   imageUrl: string;
   now: number;
-  user:User
+  user: User;
 };
 
 type BlogContextType = {
   blogs: Blog[];
   addBlog: (blog: Blog) => void;
+  deleteBlog: (id: number) => void;
+  updateBlog: (updatedBlog: Blog) => void;
 };
 
 const BlogContext = createContext<BlogContextType | null>(null);
@@ -21,6 +23,7 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
   const [blogs, setBlogs] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
   const [hasHydrated, setHasHydrated] = useState(false);
+
   useEffect(() => {
     const storedBlogs = JSON.parse(localStorage.getItem("blogs") || "[]");
     setBlogs(storedBlogs);
@@ -37,8 +40,22 @@ export const BlogProvider = ({ children }: { children: React.ReactNode }) => {
     setBlogs((prev) => [blog, ...prev]);
   };
 
+  const deleteBlog = (id: number) => {
+    setBlogs((prev) => prev.filter((blog) => blog.id !== id));
+  };
+
+  const updateBlog = (updatedBlog: Blog) => {
+    setBlogs((prev) =>
+      prev.map((blog) =>
+        blog.id === updatedBlog.id ? updatedBlog : blog
+      )
+    );
+  };
+
   return (
-    <BlogContext.Provider value={{ blogs, addBlog }}>
+    <BlogContext.Provider
+      value={{ blogs, addBlog, deleteBlog, updateBlog }}
+    >
       {!loading && children}
     </BlogContext.Provider>
   );

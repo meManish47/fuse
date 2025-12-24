@@ -9,6 +9,7 @@ import Login from "./Login.tsx";
 import Signup from "./Signup.tsx";
 import About from "./About.tsx";
 import { AuthProvider } from "./AuthContext.tsx";
+import { Toaster } from "react-hot-toast";
 const router = createBrowserRouter([
   { path: "/", element: <App /> },
   { path: "/blog/:id", element: <BlogDetail /> },
@@ -20,6 +21,7 @@ createRoot(document.getElementById("root")!).render(
   <StrictMode>
     <BlogProvider>
       <AuthProvider>
+        <Toaster position="top-center" reverseOrder={false} />
         <RouterProvider router={router} />
       </AuthProvider>
     </BlogProvider>

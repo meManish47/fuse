@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
 import Header from "./components/Header";
 import { useState } from "react";
+import toast from "react-hot-toast";
 
 export default function Signup() {
   const [name, setName] = useState("");
@@ -21,7 +22,7 @@ export default function Signup() {
     const userExists = existingUsers.some((u: any) => u.email === email);
 
     if (userExists) {
-      alert("User already exists");
+      toast.error("User already exists",{duration:1000});
       return;
     }
 
@@ -31,7 +32,7 @@ export default function Signup() {
     setName("");
     setEmail("");
     setPassword("");
-    alert("Account created successfully");
+    toast.success("Account created successfully",{duration:1000});
   }
 
   return (
