@@ -1,6 +1,6 @@
 import { useRef, useState } from "react";
 import { useBlogs } from "../BlogContext";
-import { useAuth } from "../AuthContext";
+import { useAuth, type User } from "../AuthContext";
 import toast from "react-hot-toast";
 
 export default function CreateBlogModal() {

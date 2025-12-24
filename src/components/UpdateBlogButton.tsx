@@ -52,7 +52,7 @@ export const UpdateBlogButton = ({ blog }: Props) => {
         <FiEdit3 size={16} />
       </button>
 
-      <dialog ref={modalRef} className="modal">
+      <dialog ref={modalRef} className="modal " >
         <div className="modal-box border-2 max-w-2xl bg-[#F5F7FB] text-[#333333] rounded-none">
           <h2 className="text-2xl font-semibold mb-6">Edit Blog</h2>
 

@@ -1,12 +1,15 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useAuth } from "./AuthContext";
 
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { login } = useAuth();
   function handleSubmit() {
     if (!email || !name || !password) return;
 
@@ -22,17 +25,19 @@ export default function Signup() {
     const userExists = existingUsers.some((u: any) => u.email === email);
 
     if (userExists) {
-      toast.error("User already exists",{duration:1000});
+      toast.error("User already exists", { duration: 1000 });
       return;
     }
 
     const updatedUsers = [...existingUsers, user];
     localStorage.setItem("users", JSON.stringify(updatedUsers));
-
+    sessionStorage.setItem("authUser", JSON.stringify(user));
+    login(email, password);
     setName("");
     setEmail("");
     setPassword("");
-    toast.success("Account created successfully",{duration:1000});
+    toast.success("Account created successfully", { duration: 1000 });
+    navigate("/");
   }
 
   return (

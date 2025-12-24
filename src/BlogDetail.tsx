@@ -1,11 +1,20 @@
-import { useParams } from "react-router-dom";
-import type { Blog } from "./BlogContext";
+import { useParams, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
+import { UpdateBlogButton } from "./components/UpdateBlogButton";
+import { DeleteBlogButton } from "./components/DeleteBlogButton";
+import { useBlogs } from "./BlogContext";
 
 export default function BlogDetail() {
   const { id } = useParams();
-  const blogs = JSON.parse(localStorage.getItem("blogs") || "[]");
-  const blog = blogs.find((b: Blog) => b.id === Number(id));
+  const navigate = useNavigate();
+  const { blogs } = useBlogs();
+
+  const blog = blogs.find((b) => b.id === Number(id));
+
+  if (!blog) {
+    navigate("/");
+    return null;
+  }
 
   return (
     <>
@@ -22,13 +31,18 @@ export default function BlogDetail() {
           />
 
           <div className="absolute inset-x-0 bottom-0 bg-linear-to-t from-gray-900/90 via-gray-900/60 to-transparent">
-            <div className="p-4 sm:p-6 lg:p-8  w-full">
+            <div className="p-4 sm:p-6 lg:p-8 w-full">
               <time className="block text-xs sm:text-sm text-white/80 mb-2">
                 {new Date(blog.now).toLocaleDateString()}
               </time>
 
-              <div className="flex items-baseline justify-between gap-4 w-full ">
-                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-dmsans font-semibold text-white leading-tight">
+              <div className="absolute top-8 right-8 z-50 flex gap-2  scale-130">
+                <UpdateBlogButton blog={blog} />
+                <DeleteBlogButton blog={blog} />
+              </div>
+
+              <div className="flex items-baseline justify-between gap-4 w-full">
+                <h1 className="text-2xl sm:text-3xl lg:text-4xl font-semibold text-white leading-tight">
                   {blog.title}
                 </h1>
 
@@ -47,7 +61,7 @@ export default function BlogDetail() {
 
         <section className="max-w-4xl mx-auto">
           <article className="bg-white/70 backdrop-blur rounded-xl p-4 sm:p-6 lg:p-8 shadow-sm">
-            <p className="font-dmsans text-[#333333] text-base sm:text-lg leading-relaxed whitespace-pre-line">
+            <p className="text-[#333333] text-base sm:text-lg leading-relaxed whitespace-pre-line">
               {blog.content}
             </p>
           </article>
