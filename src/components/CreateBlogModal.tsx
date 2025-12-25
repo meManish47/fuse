@@ -1,7 +1,7 @@
 import { useRef, useState } from "react";
-import { useBlogs } from "../BlogContext";
-import { useAuth, type User } from "../AuthContext";
 import toast from "react-hot-toast";
+import { useAuth } from "../AuthContext";
+import { useBlogs } from "../BlogContext";
 
 export default function CreateBlogModal() {
   const modalRef = useRef<HTMLDialogElement | null>(null);
