@@ -2,16 +2,35 @@ import { Link, useNavigate } from "react-router-dom";
 import Header from "./components/Header";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useAuth } from "./AuthContext";
+import { useAuth, type User } from "./AuthContext";
+
+function isValidEmail(email:string) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+}
 
 export default function Signup() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
   const navigate = useNavigate();
   const { login } = useAuth();
+
   function handleSubmit() {
-    if (!email || !name || !password) return;
+    if (!name || !email || !password) {
+      toast.error("Please enter all details!");
+      return;
+    }
+
+    if (!isValidEmail(email)) {
+      toast.error("Please enter a valid email address!");
+      return;
+    }
+
+    if (password.length < 6) {
+      toast.error("Password must be at least 6 characters");
+      return;
+    }
 
     const user = {
       id: Date.now(),
@@ -22,7 +41,7 @@ export default function Signup() {
 
     const existingUsers = JSON.parse(localStorage.getItem("users") || "[]");
 
-    const userExists = existingUsers.some((u: any) => u.email === email);
+    const userExists = existingUsers.some((u:User) => u.email === email);
 
     if (userExists) {
       toast.error("User already exists", { duration: 1000 });
@@ -32,10 +51,13 @@ export default function Signup() {
     const updatedUsers = [...existingUsers, user];
     localStorage.setItem("users", JSON.stringify(updatedUsers));
     sessionStorage.setItem("authUser", JSON.stringify(user));
+
     login(email, password);
+
     setName("");
     setEmail("");
     setPassword("");
+
     toast.success("Account created successfully", { duration: 1000 });
     navigate("/");
   }
@@ -52,7 +74,6 @@ export default function Signup() {
           <form
             className="space-y-5"
             onSubmit={(e) => e.preventDefault()}
-            method="GET"
           >
             <div>
               <label className="block text-sm font-medium mb-1">Name</label>
@@ -69,10 +90,10 @@ export default function Signup() {
               <label className="block text-sm font-medium mb-1">Email</label>
               <input
                 type="email"
-                onChange={(e) => setEmail(e.target.value)}
-                value={email}
                 placeholder="you@example.com"
                 className="w-full border border-[#333333] bg-transparent px-4 py-2 focus:outline-none text-[#333333]"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
             </div>
 
@@ -81,9 +102,9 @@ export default function Signup() {
               <input
                 type="password"
                 placeholder="Create a password"
-                onChange={(e) => setPassword(e.target.value)}
-                value={password}
                 className="w-full border border-[#333333] bg-transparent px-4 py-2 focus:outline-none text-[#333333]"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
               />
             </div>
 
